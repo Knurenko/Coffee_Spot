@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">CoffeeNative</string>
+
+    <string name="statistics_tab_text_placeholder">Hey dude, welcome to statistic</string>
+    <string name="history_tab_text_placeholder">Hello Buddy, welcome to history screen</string>
+    <string name="products_tab_text_placeholder">My nigga nice to see ya on home screen! \nNice cock btw</string>
+
+    <string name="products_tab_title">Products</string>
+    <string name="history_tab_title">History</string>
+    <string name="statistics_tab_title">Statistics</string>
+
+</resources>

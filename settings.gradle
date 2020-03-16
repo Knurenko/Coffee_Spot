@@ -1,0 +1,2 @@
+rootProject.name='CoffeeNative'
+include ':app'

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Планировщик Бюджета</string>
+    <string name="products_tab_text_placeholder">Здарова ебатб</string>
+    <string name="statistics_tab_text_placeholder">Прив брачо</string>
+    <string name="history_tab_text_placeholder">Энозер гритинг скрин</string>
+    <string name="statistics_tab_title">Статистика</string>
+    <string name="history_tab_title">История</string>
+    <string name="products_tab_title">Товары</string>
+</resources>
