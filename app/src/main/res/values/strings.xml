@@ -9,4 +9,7 @@
     <string name="history_tab_title">History</string>
     <string name="statistics_tab_title">Statistics</string>
 
+    <string name="product_item_title_placeholder">Latte machiato</string>
+    <string name="product_item_price_placeholder">15</string>
+
 </resources>
