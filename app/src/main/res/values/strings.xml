@@ -12,4 +12,6 @@
     <string name="product_item_title_placeholder">Latte machiato</string>
     <string name="product_item_price_placeholder">15</string>
 
+    <string name="product_item_content_description">cup of tea or coffee</string>
+
 </resources>

@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.diplomework.coffeenative.R
-import com.diplomework.coffeenative.data.Product
+import com.diplomework.coffeenative.data.model.Product
+import com.diplomework.coffeenative.data.repo.DataProvider
 import com.diplomework.coffeenative.view.recycler.ProductListAdapter
 
 class ProductListFragment : Fragment() {
@@ -29,24 +30,31 @@ class ProductListFragment : Fragment() {
         val view: View =  inflater.inflate(R.layout.fragment_product_list, container, false)
 
         val recycler: RecyclerView = view.findViewById(R.id.product_list_recycler)
-        _list = ArrayList()
-        fillListByDummyContent()
+        _list = DataProvider.getProducts()
 
-        _adapter = ProductListAdapter(requireContext(), _list)
+        val callback: ProductListAdapter.Callback = object : ProductListAdapter.Callback {
+            override fun showProductInfo(clickedItem: Product) {
+                Toast.makeText(
+                    requireContext(),
+                    "show product info! ${clickedItem.title}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun addToCart(clickedItem: Product) {
+                Toast.makeText(
+                    requireContext(),
+                    "add to cart! ${clickedItem.title}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+        }
+
+        _adapter = ProductListAdapter(requireContext(), _list, callback)
         recycler.adapter = _adapter
-        recycler.layoutManager = GridLayoutManager(requireContext(), 3)
+        recycler.layoutManager = GridLayoutManager(requireContext(), 2)
 
         return view
-    }
-
-    private fun fillListByDummyContent() {
-        _list.add(Product(1, "huipizda", "40гривен", "kczxmlckma"))
-        _list.add(Product(2, "r2d2", "1", "kczxmlckma"))
-        _list.add(Product(3, "zxasdqwe", "4", "kczxmlckma"))
-        _list.add(Product(4, "bitch plz", "5", "kczxmlckma"))
-        _list.add(Product(5, "hey nigga", "6", "kczxmlckma"))
-        _list.add(Product(6, "nice cock", "22", "kczxmlckma"))
-        _list.add(Product(7, "zalupa", "14", "kczxmlckma"))
-        _list.add(Product(8, "nikita soska", "15", "kczxmlckma"))
     }
 }

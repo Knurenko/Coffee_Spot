@@ -9,29 +9,50 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.diplomework.coffeenative.R
-import com.diplomework.coffeenative.data.Product
+import com.diplomework.coffeenative.data.model.Product
+import com.squareup.picasso.Picasso
 
-class ProductListAdapter (private val context: Context, private val products: MutableList<Product>) : RecyclerView.Adapter<ProductListAdapter.ViewHolder>() {
+class ProductListAdapter(
+    private val context: Context,
+    private val products: MutableList<Product>,
+    private val callback: Callback
+) : RecyclerView.Adapter<ProductListAdapter.ViewHolder>() {
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    interface Callback {
+        fun showProductInfo(clickedItem: Product)
+        fun addToCart(clickedItem: Product)
+    }
+
+    class ViewHolder(itemView: View, val callback: Callback) : RecyclerView.ViewHolder(itemView) {
         private val pic: ImageView = itemView.findViewById(R.id.product_item_pic)
         private val title: TextView = itemView.findViewById(R.id.product_item_title)
         private val price: TextView = itemView.findViewById(R.id.product_item_price)
         private val button: Button = itemView.findViewById(R.id.product_item_btn)
 
+        /**
+         * binds instance of VIEW to instance of DATA
+         * e.g. fill view fields with data values.
+         */
         fun bind (item: Product) {
             title.text = item.title
-            price.text = item.price
+            price.text = item.price.toString()
+
+            Picasso.get()
+                .load(item.pic)
+                .resize(300, 300)
+                .centerCrop()
+                .into(pic)
+
             button.text = "В корзину"
-            button.setOnClickListener {
-//                Toast.makeText(context, "hello dude", Toast.LENGTH_SHORT).show()
-            }
+            button.setOnClickListener { callback.addToCart(item) }
+
+            itemView.setOnClickListener { callback.showProductInfo(item) }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.product_item, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(view, callback)
     }
 
     override fun getItemCount(): Int {
