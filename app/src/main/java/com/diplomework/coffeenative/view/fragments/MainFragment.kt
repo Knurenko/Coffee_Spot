@@ -12,9 +12,6 @@ import com.google.android.material.tabs.TabLayout
 
 class MainFragment : Fragment() {
 
-    private lateinit var viewPager: ViewPager
-    private lateinit var pagerAdapter: TabAdapter
-
     companion object {
         fun newInstance() = MainFragment()
     }
@@ -29,24 +26,21 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.fragment_main, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        pagerAdapter = TabAdapter(childFragmentManager)
+        val pagerAdapter = TabAdapter(childFragmentManager)
 
         pagerAdapter.addItem(ProductListFragment.newInstance(), getString(R.string.products_tab_title))
         pagerAdapter.addItem(StatisticFragment.newInstance(), getString(R.string.statistics_tab_title))
         pagerAdapter.addItem(HistoryFragment.newInstance(), getString(R.string.history_tab_title))
 
-        viewPager = view.findViewById(R.id.view_pager)
+        val viewPager: ViewPager = view.findViewById(R.id.view_pager)
         viewPager.adapter = pagerAdapter
 
         val tabLayout: TabLayout = view.findViewById(R.id.tabs)
         tabLayout.setupWithViewPager(viewPager)
-
     }
 }

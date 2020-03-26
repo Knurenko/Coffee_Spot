@@ -16,7 +16,7 @@ import com.diplomework.coffeenative.view.recycler.ProductListAdapter
 class ProductListFragment : Fragment() {
 
     private lateinit var _adapter: ProductListAdapter
-    private lateinit var _list: MutableList<Product>
+    private val _list: MutableList<Product> = DataProvider.getProducts()
 
     companion object {
         fun newInstance() = ProductListFragment()
@@ -30,7 +30,6 @@ class ProductListFragment : Fragment() {
         val view: View =  inflater.inflate(R.layout.fragment_product_list, container, false)
 
         val recycler: RecyclerView = view.findViewById(R.id.product_list_recycler)
-        _list = DataProvider.getProducts()
 
         val callback: ProductListAdapter.Callback = object : ProductListAdapter.Callback {
             override fun showProductInfo(clickedItem: Product) {
