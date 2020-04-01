@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.diplomework.coffeenative.R
+import com.diplomework.coffeenative.activity.SecondActivity
 import com.diplomework.coffeenative.data.model.Product
 import com.diplomework.coffeenative.data.repo.DataProvider
 import com.diplomework.coffeenative.view.recycler.ProductListAdapter
@@ -33,17 +34,16 @@ class ProductListFragment : Fragment() {
 
         val callback: ProductListAdapter.Callback = object : ProductListAdapter.Callback {
             override fun showProductInfo(clickedItem: Product) {
-                Toast.makeText(
-                    requireContext(),
-                    "show product info! ${clickedItem.title}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                startActivity(SecondActivity.showProductIntent(requireContext(), clickedItem))
             }
 
             override fun addToCart(clickedItem: Product) {
+
+                DataProvider.addProductToCart(clickedItem)
+
                 Toast.makeText(
                     requireContext(),
-                    "add to cart! ${clickedItem.title}",
+                    "${clickedItem.title} добавлено в корзину",
                     Toast.LENGTH_SHORT
                 ).show()
             }

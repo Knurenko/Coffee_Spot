@@ -15,12 +15,18 @@ object DataProvider {
     private const val TAG = "check"
 
     // variables for data saving and restoring
-    data class DataBundle(val products: List<Product>, val orders: List<Order>)
+    data class DataBundle(
+        val products: List<Product>,
+        val orders: List<Order>,
+        val itemsInCart: List<Product>
+    )
     private const val PREFS_TAG = "DataBundle_tag"
 
     private var products: MutableList<Product> = ArrayList()
 
     private var orders: MutableList<Order> = ArrayList()
+
+    private var itemsInCart: MutableList<Product> = ArrayList()
 
     fun setProducts(list: List<Product>) {
         products.clear()
@@ -28,7 +34,6 @@ object DataProvider {
 
         logList("here we go, thats the products:", list)
     }
-
     fun getProducts() = products
 
     fun setOrders(list: List<Order>) {
@@ -37,14 +42,41 @@ object DataProvider {
 
         logList("here we go, thats the orders:", list)
     }
-
     fun getOrders() = orders
+
+    fun setCartItems(list: List<Product>) {
+        itemsInCart.clear()
+        itemsInCart.addAll(list)
+
+        logList("here we go, thats items in cart", list)
+    }
+
+    fun getCarItems() = itemsInCart
+
+    fun findProduct(id: Int): Product = products.find { it.id == id } ?: products[0]
+
+    fun addProductToCart(item: Product) {
+        itemsInCart.add(item)
+    }
+
+    fun removeproductFromCart(item: Product) {
+        itemsInCart.remove(item)
+    }
+
+    fun completeOrder() {
+        var maxId = 0
+        orders.forEach { if (it.id > maxId) maxId = it.id }
+
+        val newOrder = Order(maxId + 1, Date(), itemsInCart.toList())
+        orders.add(newOrder)
+        itemsInCart.clear()
+    }
 
     /**
      * method to save product list values into shared preferences
      */
     fun saveDataToSharedPrefs() {
-        val bundle = DataBundle(products, orders)
+        val bundle = DataBundle(products, orders, itemsInCart)
         PreferenceHelper.save(bundle, PREFS_TAG)
     }
 
@@ -56,6 +88,7 @@ object DataProvider {
 
         setProducts(if (bundle?.products != null && bundle.products.isNotEmpty()) bundle.products else fillDummyProducts())
         setOrders(if (bundle?.orders != null && bundle.orders.isNotEmpty()) bundle.orders else fillDummyOrders())
+        if (bundle?.itemsInCart != null && bundle.itemsInCart.isNotEmpty()) setCartItems(bundle.itemsInCart)
     }
 
     private fun fillDummyOrders(): List<Order> {

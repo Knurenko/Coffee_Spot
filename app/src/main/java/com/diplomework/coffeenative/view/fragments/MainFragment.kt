@@ -1,12 +1,13 @@
 package com.diplomework.coffeenative.view.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.diplomework.coffeenative.R
+import com.diplomework.coffeenative.activity.SecondActivity
+import com.diplomework.coffeenative.data.repo.DataProvider
 import com.diplomework.coffeenative.view.pager.TabAdapter
 import com.google.android.material.tabs.TabLayout
 
@@ -20,6 +21,7 @@ class MainFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         retainInstance = true
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -42,5 +44,21 @@ class MainFragment : Fragment() {
 
         val tabLayout: TabLayout = view.findViewById(R.id.tabs)
         tabLayout.setupWithViewPager(viewPager)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fragment_main, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.cart) {
+            if (DataProvider.getCarItems().size != 0) {
+                startActivity(SecondActivity.showCartIntent(requireContext()))
+            } else {
+                Toast.makeText(requireContext(), "Корзина пуста", Toast.LENGTH_SHORT).show()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

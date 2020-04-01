@@ -23,4 +23,7 @@
     <string name="order_item_product_header">Наименование:</string>
     <string name="order_item_price_header">Стоимость:</string>
 
+    <string name="cart_title">Корзина</string>
+    <string name="product_title">Информация о товаре</string>
+
 </resources>
