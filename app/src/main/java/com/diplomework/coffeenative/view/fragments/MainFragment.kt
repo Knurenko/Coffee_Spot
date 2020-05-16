@@ -35,9 +35,18 @@ class MainFragment : Fragment() {
 
         val pagerAdapter = TabAdapter(childFragmentManager)
 
-        pagerAdapter.addItem(ProductListFragment.newInstance(), getString(R.string.products_tab_title))
-        pagerAdapter.addItem(StatisticFragment.newInstance(), getString(R.string.statistics_tab_title))
-        pagerAdapter.addItem(HistoryFragment.newInstance(), getString(R.string.history_tab_title))
+        val products = ProductListFragment.newInstance()
+        val statistics = StatisticFragment.newInstance()
+
+        val dataUpdateCallback = object : HistoryFragment.IDataUpdatedCallback {
+            override fun onUpdateFinish() = statistics.onResume()
+        }
+
+        val history = HistoryFragment.newInstance(dataUpdateCallback)
+
+        pagerAdapter.addItem(products, getString(R.string.products_tab_title))
+        pagerAdapter.addItem(history, getString(R.string.history_tab_title))
+        pagerAdapter.addItem(statistics, getString(R.string.statistics_tab_title))
 
         val viewPager: ViewPager = view.findViewById(R.id.view_pager)
         viewPager.adapter = pagerAdapter
@@ -53,7 +62,7 @@ class MainFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.cart) {
-            if (DataProvider.getCarItems().size != 0) {
+            if (DataProvider.itemsInCart.size != 0) {
                 startActivity(SecondActivity.showCartIntent(requireContext()))
             } else {
                 Toast.makeText(requireContext(), "Корзина пуста", Toast.LENGTH_SHORT).show()

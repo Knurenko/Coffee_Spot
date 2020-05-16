@@ -9,16 +9,56 @@ import androidx.recyclerview.widget.RecyclerView
 import com.diplomework.coffeenative.R
 import com.diplomework.coffeenative.data.model.Product
 
-class ProductsOfOrderAdapter(private val context: Context, private val products: List<Product>) :
+class ProductsOfOrderAdapter(
+    private val context: Context,
+    private val products: List<Product>,
+    private val callback: IStockCountChanger? = null
+) :
     RecyclerView.Adapter<ProductsOfOrderAdapter.ViewHolder>() {
 
+    interface IStockCountChanger {
+        fun increase(item: Product)
+        fun decrease(item: Product)
+        fun showDeletingHint()
+    }
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val count: TextView = itemView.findViewById(R.id.product_for_order_count)
         private val title: TextView = itemView.findViewById(R.id.product_for_order_title)
         private val price: TextView = itemView.findViewById(R.id.product_for_order_price)
 
-        fun bind(item: Product) {
-            title.text = item.title
-            price.text = item.price.toString()
+        private val plusButton: TextView = itemView.findViewById(R.id.product_for_order_plus_button)
+        private val minusButton: TextView =
+            itemView.findViewById(R.id.product_for_order_minus_button)
+
+        fun bind(item: Product, callback: IStockCountChanger?) {
+            title.text = item.name
+            price.text = item.getStockPrice().toString()
+            count.text = item.count.toString()
+
+            if (callback != null) {
+                checkVisibility(item)
+                itemView.setOnLongClickListener {
+                    callback.showDeletingHint()
+                    false
+                }
+                minusButton.setOnClickListener {
+                    if (item.count > 1) callback.decrease(item)
+                }
+                plusButton.setOnClickListener { callback.increase(item) }
+            }
+        }
+
+        private fun checkVisibility(item: Product) {
+            if (item.count > 1) {
+                minusButton.visibility = View.VISIBLE
+//                minusButton.isClickable = true
+            } else {
+                minusButton.visibility = View.GONE
+//                minusButton.isClickable = false
+            }
+            plusButton.visibility = View.VISIBLE
+
         }
     }
 
@@ -33,6 +73,6 @@ class ProductsOfOrderAdapter(private val context: Context, private val products:
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(products[position])
+        holder.bind(products[position], callback)
     }
 }

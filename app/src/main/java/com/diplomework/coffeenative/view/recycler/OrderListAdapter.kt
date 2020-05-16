@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.diplomework.coffeenative.R
@@ -12,8 +13,16 @@ import com.diplomework.coffeenative.data.model.Order
 import java.text.SimpleDateFormat
 import java.util.*
 
-class OrderListAdapter(private val context: Context, private val orders: MutableList<Order>) :
+class OrderListAdapter(
+    private val context: Context,
+    private val orders: MutableList<Order>,
+    private val listener: IItemDeleteListener
+) :
     RecyclerView.Adapter<OrderListAdapter.ViewHolder>() {
+
+    interface IItemDeleteListener {
+        fun onDelete(item: Order, position: Int)
+    }
 
     class ViewHolder(itemView: View, private val context: Context) :
         RecyclerView.ViewHolder(itemView) {
@@ -23,7 +32,7 @@ class OrderListAdapter(private val context: Context, private val orders: Mutable
 
         private val recycler: RecyclerView = itemView.findViewById(R.id.order_item_recycler)
 
-        fun bind(item: Order) {
+        fun bind(item: Order, listener: IItemDeleteListener, position: Int) {
             idNumber.text = item.id.toString()
             totalCost.text = item.totalPrice.toString()
 
@@ -36,6 +45,27 @@ class OrderListAdapter(private val context: Context, private val orders: Mutable
             val adapter = ProductsOfOrderAdapter(context, item.products)
             recycler.adapter = adapter
             recycler.layoutManager = LinearLayoutManager(context)
+
+            itemView.setOnLongClickListener {
+                it.showContextMenu()
+            }
+
+            @Suppress("DEPRECATION")
+            recycler.isLayoutFrozen = true
+
+            itemView.setOnCreateContextMenuListener { menu, _, _ ->
+                menu?.add("Удалить заказ №${item.id}")?.setOnMenuItemClickListener {
+                    AlertDialog.Builder(context)
+                        .setTitle("Удаление заказа #${item.id}")
+                        .setMessage("Вы уверены?")
+                        .setPositiveButton("Да") { _, _ -> listener.onDelete(item, position) }
+                        .setNegativeButton("Отмена") { _, _ -> Unit }
+                        .setCancelable(true)
+                        .create()
+                        .show()
+                    true
+                }
+            }
         }
     }
 
@@ -51,6 +81,6 @@ class OrderListAdapter(private val context: Context, private val orders: Mutable
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(orders[position])
+        holder.bind(orders[position], listener, position)
     }
 }

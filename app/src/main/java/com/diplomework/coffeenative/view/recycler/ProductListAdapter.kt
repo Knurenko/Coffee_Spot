@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.diplomework.coffeenative.R
 import com.diplomework.coffeenative.data.model.Product
+import com.diplomework.coffeenative.data.network.NetworkApi
 import com.squareup.picasso.Picasso
 
 class ProductListAdapter(
@@ -23,7 +24,8 @@ class ProductListAdapter(
         fun addToCart(clickedItem: Product)
     }
 
-    class ViewHolder(itemView: View, val callback: Callback) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, private val callback: Callback) :
+        RecyclerView.ViewHolder(itemView) {
         private val pic: ImageView = itemView.findViewById(R.id.product_item_pic)
         private val title: TextView = itemView.findViewById(R.id.product_item_title)
         private val price: TextView = itemView.findViewById(R.id.product_item_price)
@@ -34,11 +36,13 @@ class ProductListAdapter(
          * e.g. fill view fields with data values.
          */
         fun bind (item: Product) {
-            title.text = item.title
+            title.text = item.name
             price.text = item.price.toString()
 
+            val picAddress = "${NetworkApi.BASE_URL}${NetworkApi.PIC_STORAGE_URL}/${item.pic}"
+
             Picasso.get()
-                .load(item.pic)
+                .load(picAddress)
                 .resize(300, 300)
                 .centerCrop()
                 .into(pic)

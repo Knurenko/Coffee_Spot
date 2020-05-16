@@ -1,13 +1,9 @@
 <resources>
-    <string name="app_name">CoffeeNative</string>
+    <string name="app_name">Coffee Spot</string>
 
-    <string name="statistics_tab_text_placeholder">Hey dude, welcome to statistic</string>
-    <string name="history_tab_text_placeholder">Hello Buddy, welcome to history screen</string>
-    <string name="products_tab_text_placeholder">My nigga nice to see ya on home screen! \nNice cock btw</string>
-
-    <string name="products_tab_title">Products</string>
-    <string name="history_tab_title">History</string>
-    <string name="statistics_tab_title">Statistics</string>
+    <string name="products_tab_title">Товары</string>
+    <string name="history_tab_title">История</string>
+    <string name="statistics_tab_title">Статистика</string>
 
     <string name="product_item_title_placeholder">Latte machiato</string>
     <string name="product_item_price_placeholder">15</string>
@@ -19,11 +15,16 @@
     <string name="order_item_time_title">Время:</string>
     <string name="order_item_time">19.02.20 20:15</string>
     <string name="order_item_time_pattern">dd.MM.yyyy HH:mm</string>
-    <string name="order_item_total_price">Общая стоимость:</string>
+    <string name="order_item_total_price">Общая сумма:</string>
     <string name="order_item_product_header">Наименование:</string>
-    <string name="order_item_price_header">Стоимость:</string>
+    <string name="order_item_price_header">Сумма:</string>
 
     <string name="cart_title">Корзина</string>
     <string name="product_title">Информация о товаре</string>
+    <string name="cart_icon_undo_title">Отменить</string>
+
+    <string name="refresh_hint_text">Похоже, что список %1$s пуст.
+    Потяните экран вниз для обновления</string>
+    <string name="no_internet_message">Отсутствует интернет-соединение, проверьте настройки сети</string>
 
 </resources>
