@@ -53,7 +53,7 @@ class MainFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.cart) {
-            if (DataProvider.getCarItems().size != 0) {
+            if (DataProvider.itemsInCart.size != 0) {
                 startActivity(SecondActivity.showCartIntent(requireContext()))
             } else {
                 Toast.makeText(requireContext(), "Корзина пуста", Toast.LENGTH_SHORT).show()

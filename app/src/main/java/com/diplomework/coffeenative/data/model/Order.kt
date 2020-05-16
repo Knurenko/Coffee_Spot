@@ -7,13 +7,6 @@ data class Order(
     val time: Date,
     val products: List<Product>
 ) {
-    val totalPrice: Int
-
-    init {
-        var price = 0
-        for (item: Product in products) {
-            price += item.price
-        }
-        totalPrice = price
-    }
+    val totalPrice: Int = products.sumBy { it.getStockPrice() }
+    val totalCount: Int = products.sumBy { it.count }
 }
